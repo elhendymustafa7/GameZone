@@ -1,5 +1,11 @@
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
+var ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("No connection string");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+builder.Services.AddScoped<IDevicesService, DevicesService>();
+builder.Services.AddScoped<IGamesServices, GamesServices>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
